@@ -10,3 +10,5 @@ User.create!(email: "shiv@gmail.com", password: '123456', full_name: "shiv", pas
 user = User.find_by( email: 'admin@gmail.com')
 user.confirmed_at = Time.now
 user.save!
+
+UserRole.create!(user_id: user.id, role_id: 0)

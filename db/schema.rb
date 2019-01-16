@@ -15,41 +15,9 @@ ActiveRecord::Schema.define(version: 2019_01_14_152625) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "bookings", force: :cascade do |t|
-    t.integer "duration"
-    t.datetime "booked_date"
-    t.integer "user_id"
-    t.integer "room_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "end_date"
-    t.integer "status"
-  end
-
-  create_table "fascilities", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.integer "room_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "holidays", force: :cascade do |t|
-    t.string "title"
-    t.datetime "holiday_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "projects", force: :cascade do |t|
     t.string "project_name"
     t.string "project_description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "rooms", force: :cascade do |t|
-    t.integer "room_no"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

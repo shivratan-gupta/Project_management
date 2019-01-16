@@ -23,7 +23,7 @@ default: &default
 
 development:
   <<: *default
-  database: room_management_development
+  database: project_management_development
   host: 127.0.0.1
   username: postgres
   password: postgres 
@@ -60,7 +60,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: room_management_test
+  database: project_management_test
   host: 127.0.0.1
   username: postgres
   password: postgres
@@ -86,7 +86,7 @@ test:
 #
 production:
   <<: *default
-  database: room_management_development
+  database: project_management_development
   host: 127.0.0.1
   username: postgres
   password: postgres

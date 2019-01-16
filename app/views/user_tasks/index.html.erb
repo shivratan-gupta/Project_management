@@ -15,9 +15,9 @@
   <tbody>
     <% @user_tasks.each do |user_task| %>
       <tr>
-        <td><%=User.find(user_task.user_id).full_name %></td>
-        <td><%=Project.find(user_task.project_id).project_name %></td>
-        <td><%=Task.find(user_task.task_id).task_name %></td>
+        <td><%=user_detail(user_task.user_id).full_name %></td>
+        <td><%=project_detail(user_task.project_id).project_name %></td>
+        <td><%=task_detail(user_task.task_id).task_name %></td>
         <!-- <td><%#= link_to 'Show', user_task %></td> -->
         <td><%= link_to 'Edit', edit_user_task_path(user_task) %></td>
         <td><%= link_to 'Destroy', user_task, method: :delete, data: { confirm: 'Are you sure?' } %></td>

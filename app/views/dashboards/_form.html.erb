@@ -1,0 +1,36 @@
+<%= form_for(@user_task, :url => dashboard_path(params[:id])) do |f| %>
+  <%#= f.error_notification %>
+  <div class="row">
+    <div class="col-sm-4">
+     
+     <div class="field form-group">
+      <div class="control">
+        <h4 style="padding-left: 0px">Project  : <%=@project_name%></h4>
+      </div>
+     </div>
+     <div class="field form-group">
+      <div class="control">
+          <h4 style="padding-left: 0px">Task  : <%=@task_name%></h4>
+      </div>
+     </div>
+     <div class="field form-group">
+      <div class="control">
+        <h4 style="padding-left: 0px">Task Description : <%=@task_description%></h4>
+      </div>
+     </div>
+     <div class="field form-group">
+      <div class="control">
+          <%= f.label  :task_status %>
+          <%= f.select :task_status, options_for_select(@task_status, :selected => @user_task.task_status), { :prompt => 'Select status'}, class: "input form-control" %>
+      </div>
+     </div>
+     <div class="field form-group">
+      <div class="control">
+        <%= f.submit :submit, class: "button is-link btn btn-info" %>
+      </div>
+     </div>
+    </div>
+  </div>
+
+<% end %>
+

@@ -1,0 +1,27 @@
+<%= form_for(@user_role) do |f| %>
+  <%#= f.error_notification %>
+  <div class="row">
+    <div class="col-sm-4">
+     <div class="field form-group">
+      <div class="control">
+        <%= f.label  :user_id %>
+        <%#= f.text_field :user_id, class: "input form-control" %>
+        <%= f.select :user_id, options_for_select(User.all.map{|i| ["#{i.full_name}", i.id]},:selected => @user_role.user_id), { :prompt => 'Select User'}, class: "input form-control" %>
+      </div>
+     </div>
+     <div class="field form-group">
+      <div class="control">
+          <%= f.label  :role_id %>
+        <%#= f.text_field :user_role, class: "input form-control" %>
+          <%= f.select :role_id, options_for_select(UserRole::ROLES.map{|i| ["#{i[1]}",i[0]]}, :selected => @user_role.role_id), { :prompt => 'Select Role'}, class: "input form-control" %>
+      </div>
+     </div>
+     <div class="field form-group">
+      <div class="control">
+        <%= f.submit :submit, class: "button is-link btn btn-info" %>
+      </div>
+     </div>
+    </div>
+  </div>
+
+<% end %>

@@ -1,0 +1,1 @@
+ <%= f.association :task_id, options_for_select(UserRole::ROLES.map{|i| ["#{i[1]}",i[0]]}, :selected => @user_task.task_id), { :prompt => 'Select task'}, class: "input form-control" %>

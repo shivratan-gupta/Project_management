@@ -1,0 +1,131 @@
+<p id="notice"><%= notice %></p>
+<% if session[:user_role] != "Admin"%>
+  <h1>User Dashboards</h1>
+
+  <table class="table table-bordered table-responsive">
+    <thead>
+      <tr>
+        <th>Project Name</th>
+        <th>Task Name</th>
+        <th>Task Description</th>
+        <th>Task Status</th>
+        <th colspan="1">Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @user_tasks.each do |user_task| %>
+        <tr>
+          <td><%=Project.find(user_task.project_id).project_name %></td>
+          <% task_detail = Task.find(user_task.task_id) %>
+          <td><%=task_detail.task_name %></td>
+          <td><%=task_detail.task_description %></td>
+          <td><%=UserTask::TASK_STATUS[user_task.task_status] %></td>
+          <td><%= link_to 'Edit', edit_dashboard_path(user_task) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <h1>Admin Dashboards</h1>
+    <% if @user_tasks_project_ids.present? %>
+      <table class="table table-bordered table-responsive">
+        <thead>
+          <tr>
+            <th style="text-align:center">Status</th>
+            <% @project_name = {} %>
+            <% @user_tasks_project_ids.each do |ids| %>
+              <% project = Project.find(ids) %>
+            <th style="text-align:center"><%=project.project_name %></th>
+                <% @project_name[ids] = project.project_name %>
+            <% end %>
+          </tr>
+        </thead>
+
+        <tbody>
+            <% task_ids_at_user_level = [] %>
+            <% @project = {} %>
+            <% @task_wip = [] %>
+            <% @task_new = [] %>
+            <tr>
+              <td >Done</td>
+              <% @user_tasks_project_ids.each do |projectid| %>
+                <% user_task_list = UserTask.where(:project_id => projectid,:task_status => 2)%>
+                <% @project[projectid] = @project.has_key?(projectid)? @project[projectid] : [['status','count']]%>
+                <% @project[projectid] << ["Done",user_task_list.count]%>
+                <td ><ul>
+                <% user_task_list.each do |user_task| %>
+                  <% task_ids_at_user_level << user_task.task_id %>
+                  <li><%=Task.find(user_task.task_id).task_name %></li>
+                <% end %>
+                </ul></td>
+              <% end %>
+            </tr>
+            <tr>
+              <td >In Progress</td>
+              <% @user_tasks_project_ids.each do |projectid| %>
+                <% user_task_list = UserTask.where(:project_id => projectid,:task_status => 1)%>
+                <td ><ul>
+                <% @project[projectid] = @project.has_key?(projectid)? @project[projectid] : [['status','count']]%>
+                <% @project[projectid] << ["In Progress",user_task_list.count]%>
+
+                <% user_task_list.each do |user_task| %>
+                  <% task_ids_at_user_level << user_task.task_id %>
+                  <% @task_wip <<  user_task.task_id %>
+                  <li><%=Task.find(user_task.task_id).task_name %></li>
+                <% end %>
+                </ul></td>
+              <% end %>
+            </tr>
+            <tr>
+              <td >New</td>
+              <% @user_tasks_project_ids.each do |projectid| %>
+                <%# user_task_list = UserTask.where(:project_id => projectid,:task_status => 2)%>
+                <% user_task_list = Task.where(:project_id => projectid).where.not(id: task_ids_at_user_level)%>
+                <% @project[projectid] = @project.has_key?(projectid)? @project[projectid] : [['status','count']]%>
+                <% @project[projectid] << ["New",user_task_list.count]%>
+
+                <td ><ul>
+                <% user_task_list.each do |user_task| %>
+                  <% @task_new <<  user_task.id %>
+                  <li><%=user_task.task_name %></li>
+                <%end %>
+                </ul></td>
+              <% end %>
+            </tr>
+        </tbody>
+      </table>
+
+      <% @user_tasks_project_ids.each do |ids| %>
+        <div id="piechart_<%=ids%>" style="width: 400px; height: 300px;"></div>
+      <% end %>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script type="text/javascript">
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+
+          <% @user_tasks_project_ids.each do |ids| %>
+            project_data = '<%=@project[ids]%>'
+            temp_data = JSON.parse(project_data.replace(/&quot;/g,'"'));
+            var data = google.visualization.arrayToDataTable(temp_data);
+            var options = {
+              legend: 'none',
+              pieSliceText: 'label',
+              title: '<%=@project_name[ids]%>',
+              pieStartAngle: 100,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart_<%=ids%>'));
+            chart.draw(data, options);
+
+          <% end %>
+          
+        }
+      </script>
+    <% else %>
+      <table class="table table-bordered table-responsive">
+      <tbody>Record Not Present</tbody>
+      </table>
+    <% end %>
+<% end %>

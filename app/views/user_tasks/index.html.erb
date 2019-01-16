@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>User Tasks</h1>
+
+<table class="table table-bordered table-responsive">
+  <thead>
+    <tr>
+      <th>User Name</th>
+      <th>Project</th>
+      <th>Task</th>
+      <th colspan="2">Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @user_tasks.each do |user_task| %>
+      <tr>
+        <td><%=User.find(user_task.user_id).full_name %></td>
+        <td><%=Project.find(user_task.project_id).project_name %></td>
+        <td><%=Task.find(user_task.task_id).task_name %></td>
+        <!-- <td><%#= link_to 'Show', user_task %></td> -->
+        <td><%= link_to 'Edit', edit_user_task_path(user_task) %></td>
+        <td><%= link_to 'Destroy', user_task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New User Task', new_user_task_path %>

@@ -1,0 +1,7 @@
+str = '<select class="input form-control" name="user_task[task_id]" id="user_task_task_id"><option value="">Select Task</option>'
+<% @tasks.each do |task| %>
+	str = str + '<option value="<%=task[1]%>"><%=task[0]%></option>'
+<% end %>
+str = str + '</select>'
+console.log(str)
+document.getElementById("task_list").innerHTML = str;

@@ -1,0 +1,46 @@
+<%= form_for(@user_task) do |f| %>
+  <%#= f.error_notification %>
+  <div class="row">
+    <div class="col-sm-4">
+     <div class="field form-group">
+      <div class="control">
+        <%= f.label  :user_id %>
+        <%#= f.text_field :user_id, class: "input form-control" %>
+        <%= f.select :user_id, options_for_select(User.all.map{|i| ["#{i.full_name}", i.id]},:selected => @user_task.user_id), { :prompt => 'Select User'}, class: "input form-control" %>
+      </div>
+     </div>
+     <div class="field form-group">
+      <div class="control">
+        <%= f.label  :project_id %>
+        <%= f.select :project_id, options_for_select(@project_list,:selected => @user_task.project_id), { :prompt => 'Select Project'}, class: "input form-control" %>
+      </div>
+     </div>
+     <div class="field form-group">
+      <div class="control">
+          <%= f.label  :task_id %>
+          <div id="task_list">
+          <%= f.select :task_id, options_for_select(@task_list, :selected => @user_task.task_id), { :prompt => 'Select Task'}, class: "input form-control" %>
+          </div>
+      </div>
+     </div>
+     <div class="field form-group">
+      <div class="control">
+        <%= f.submit :submit, class: "button is-link btn btn-info" %>
+      </div>
+     </div>
+    </div>
+  </div>
+
+<% end %>
+
+<script type="text/javascript">
+  
+
+    $("#user_task_project_id").change(function(){
+        var project_id = $(this).val();
+        $.get('<%= load_task_user_tasks_path %>',{project_id: project_id });
+        return false;
+    });
+
+
+</script>

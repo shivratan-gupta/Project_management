@@ -16,10 +16,10 @@
     <tbody>
       <% @user_tasks.each do |user_task| %>
         <tr>
-          <td><%=project_detail(user_task.project_id).project_name %></td>
+          <td><%=project_detail(user_task.project_id).try(:project_name) %></td>
           <% task_detail = task_detail(user_task.task_id) %>
-          <td><%=task_detail.task_name %></td>
-          <td><%=task_detail.task_description %></td>
+          <td><%=task_detail.try(:task_name) %></td>
+          <td><%=task_detail.try(:task_description) %></td>
           <td><%=UserTask::TASK_STATUS[user_task.task_status] %></td>
           <td><%= link_to 'Edit', edit_dashboard_path(user_task) %></td>
         </tr>
@@ -55,8 +55,8 @@
                 <% @project[projectid] << ["Done",user_task_list.count]%>
                 <td ><ul>
                 <% user_task_list.each do |user_task| %>
-                  <% task_ids_at_user_level << user_task.task_id %>
-                  <li><%=task_detail(user_task.task_id).task_name %></li>
+                  <% task_ids_at_user_level << user_task.try(:task_id) %>
+                  <li><%=task_detail(user_task.task_id).try(:task_name) %></li>
                 <% end %>
                 </ul></td>
               <% end %>
@@ -70,9 +70,9 @@
                 <% @project[projectid] << ["In Progress",user_task_list.count]%>
 
                 <% user_task_list.each do |user_task| %>
-                  <% task_ids_at_user_level << user_task.task_id %>
+                  <% task_ids_at_user_level << user_task.try(:task_id) %>
                   <% @task_wip <<  user_task.task_id %>
-                  <li><%=task_detail(user_task.task_id).task_name %></li>
+                  <li><%=task_detail(user_task.task_id).try(:task_name) %></li>
                 <% end %>
                 </ul></td>
               <% end %>
@@ -88,7 +88,7 @@
                 <td ><ul>
                 <% user_task_list.each do |user_task| %>
                   <% @task_new <<  user_task.id %>
-                  <li><%=user_task.task_name %></li>
+                  <li><%=user_task.try(:task_name) %></li>
                 <%end %>
                 </ul></td>
               <% end %>

@@ -16,8 +16,8 @@
   <tbody>
     <% @projects.each do |project| %>
       <tr>
-        <td><%= project.project_name %></td>
-        <td><%= project.project_description %></td>
+        <td><%= project.try(:project_name) %></td>
+        <td><%= project.try(:project_description) %></td>
         <td><%= project.tasks.pluck(:task_name).join(',')%></td>
         <!-- <td><%#= link_to 'Show', project %></td> -->
         <td><%= link_to 'Edit', edit_project_path(project) %></td>

@@ -1,11 +1,11 @@
 module DashboardsHelper
 
 	def completed_task(projectid)
-		user_task_list = UserTask.where(:project_id => projectid,:task_status => 2) if project_id.present? 
+		user_task_list = UserTask.where(:project_id => projectid,:task_status => 2) if projectid.present? 
 	end
 
 	def in_progress_task(projectid)
-		user_task_list = UserTask.where(:project_id => projectid,:task_status => 1) if project_id.present?
+		user_task_list = UserTask.where(:project_id => projectid,:task_status => 1) if projectid.present?
 	end
 
 	def new_task(projectid,task_ids_at_user_level)
@@ -16,8 +16,8 @@ module DashboardsHelper
 		Task.find(task_id) if task_id.present?
 	end
 
-	def project_detail(project_id)
-		Project.find(project_id) if project_id.present?
+	def project_detail(projectid)
+		Project.find(projectid) if projectid.present?
 	end
 
 	def user_detail(user_id)
